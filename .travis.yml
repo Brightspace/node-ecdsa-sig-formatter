@@ -4,3 +4,12 @@ node_js:
 - iojs
 - '0.12'
 after_success: npm run report-cov
+deploy:
+  provider: npm
+  email: d2ltravisdeploy@d2l.com
+  api_key:
+    secure: JSyBQNIi5A6RjAkDQSg52p3xTHC5ldbwUnxvcIGD/Ik90YHjE3e2GbeiDJOeh0MsjKEiXL//mjD2j063cPQGzjyFdDWa5gvHUBvi14aiTql/B7hg45Zeqp5gj1V+Tp6ix1QLZj27jHIK+Kty4/HJVsGFvOus7ngrgboevIjjBbzGZ7Q8Ood5hJOK0JUSlPgwEVlDb1QC+NmCMs+EHIZ4Ck6YkB55K1ctaEDlnWxqOtesg9sbI3TtbWwXXT6WdNq4AbLXnML72RPmV53i3/Hbz90jMpN0DgBrORyQT2kcCigbrq25ykTWSDLPzVEtgdtZPPOBJT1lySeBLcbCwWgDZagfP65UGw8zs9DWKQdrHzCHgegLhcQ0Dgx2FuYrF72DnZCHNqrackMhIfwW+Xb4UcVRVVzfbifNZgOPkf9TtEAkasdU4svIQJwAsqsAnMgKKr1SYUib+35l9xfrjDX8WJu5vllkRBJkse9kAHQxqpzYZmIW6utSly4kYEoTujzg8B6uP7INhWwyczoITI5vX+hoSTctFCXFQbXJ05OfAYN3ZQG/VnG84EqogxoyH0TMDcPbNB+XpBD4jnULYuG9ljux5nkrY/0zhb19dHgHDbZWAAxonhJWlpbElqzL2pVMeLsAccFZ47axC+11KKCxKpdRaLjozo3PyOxQOonffZM=
+  on:
+    all_branches: true
+    tags: true
+    repo: Brightspace/node-ecdsa-sig-formatter
