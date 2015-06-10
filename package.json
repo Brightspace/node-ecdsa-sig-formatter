@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Brightspace/node-cdsa-sig-formatter.git"
+    "url": "git+ssh://git@github.com/Brightspace/node-ecdsa-sig-formatter.git"
   },
   "keywords": [
     "ecdsa",
