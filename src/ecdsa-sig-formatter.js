@@ -40,7 +40,7 @@ function bignumToBuf (bn, numBytes) {
 
 function signatureAsBuffer (signature) {
 	if (Buffer.isBuffer(signature)) {
-		return new Buffer(signature);
+		return signature;
 	} else if ('string' === typeof signature) {
 		return new Buffer(signature, 'base64');
 	}
