@@ -1,14 +1,6 @@
 'use strict';
 
-var asn1 = require('asn1.js'),
-	base64Url = require('base64-url').escape;
-
-var ECDSASigValue = asn1.define('ECDSASigValue', function () {
-	this.seq().obj(
-		this.key('r').int(),
-		this.key('s').int()
-	);
-});
+var base64Url = require('base64-url').escape;
 
 var MAX_OCTET = 0x80,
 	CLASS_UNIVERSAL = 0,
@@ -38,11 +30,6 @@ function getParamBytesForAlg (alg) {
 	throw new Error('Unknown algorithm "' + alg + '"');
 }
 
-function bignumToBuf (bn, numBytes) {
-	var buf = new Buffer(bn.toString('hex', numBytes), 'hex');
-	return buf;
-}
-
 function signatureAsBuffer (signature) {
 	if (Buffer.isBuffer(signature)) {
 		return signature;
@@ -57,14 +44,69 @@ function derToJose(signature, alg) {
 	signature = signatureAsBuffer(signature);
 	var paramBytes = getParamBytesForAlg(alg);
 
+	var inputLength = signature.length;
 
+	var offset = 0;
+	if (signature[offset++] !== ENCODED_TAG_SEQ) {
+		throw new Error('Could not find expected "seq"');
+	}
 
-	signature = ECDSASigValue.decode(signature, 'der');
+	var seqLength = signature[offset++];
+	if (seqLength === (MAX_OCTET | 1)) {
+		seqLength = signature[offset++];
+	}
 
-	var r = bignumToBuf(signature.r, paramBytes);
-	var s = bignumToBuf(signature.s, paramBytes);
+	if (inputLength - offset < seqLength) {
+		throw new Error('"seq" specified length of "' + seqLength + '", only "' + (inputLength - offset) + '" remaining');
+	}
 
-	signature = Buffer.concat([r, s], r.length + s.length);
+	if (signature[offset++] !== ENCODED_TAG_INT) {
+		throw new Error('Could not find expected "int" for "r"');
+	}
+
+	var rLength = signature[offset++];
+
+	if (inputLength - offset - 2 < rLength) {
+		throw new Error('"r" specified length of "' + rLength + '", only "' + (inputLength - offset - 2) + '" available');
+	}
+
+	var r = signature.slice(offset, offset + rLength);
+	offset += r.length;
+
+	if (signature[offset++] !== ENCODED_TAG_INT) {
+		throw new Error('Could not find expected "int" for "s"');
+	}
+
+	var sLength = signature[offset++];
+
+	if (inputLength - offset !== sLength) {
+		throw new Error('"s" specified length of "' + sLength + '", expected "' + (inputLength - offset) + '"');
+	}
+
+	var s = signature.slice(offset);
+	offset += s.length;
+
+	if (offset !== inputLength) {
+		throw new Error('Expected to consume entire buffer, but "' + (inputLength - offset) + '" bytes remain');
+	}
+
+	var rPadding = paramBytes - r.length,
+		sPadding = paramBytes - s.length;
+
+	signature = new Buffer(rPadding + r.length + sPadding + s.length);
+
+	for (offset = 0; offset < rPadding; ++offset) {
+		signature[offset] = 0;
+	}
+	r.copy(signature, offset, Math.max(-rPadding, 0));
+
+	offset = paramBytes;
+
+	for (var o = offset; offset < o + sPadding; ++offset) {
+		signature[offset] = 0;
+	}
+	s.copy(signature, offset, Math.max(-sPadding, 0));
+
 	signature = signature.toString('base64');
 	signature = base64Url(signature);
 
