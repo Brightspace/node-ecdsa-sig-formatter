@@ -8,10 +8,19 @@ var sigs = [
 	['AFKapY_5gq60n8NZ_C2iOQFov7sXgcMyDzCrnGsbvE7OlSBKbgj95aZ7GtdSdbw6joK2jjWJio8IgKNB9o11GdMTADfLUsv9oAJvmIApsmsPBAIe1vH8oeHYiDMBEz9OQcwS5eL-r1iO2v7oxzl9zZb1rA5kzBqS93ARCPKbjgcr602r', 'ES512']
 ];
 
+var sigBuffers = sigs.map(function (sig) {
+	return [new Buffer(sig[0], 'base64'), sig[1]];
+});
+
 module.exports.compare = {
-	joseToDer: function () {
+	fromBase64: function () {
 		for (var i = 0, n = sigs.length; i < n; ++i) {
 			joseToDer.apply(null, sigs[i]);
+		}
+	},
+	fromBuffer: function () {
+		for (var i = 0, n = sigBuffers.length; i < n; ++i) {
+			joseToDer.apply(null, sigBuffers[i]);
 		}
 	}
 };
