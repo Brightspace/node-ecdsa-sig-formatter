@@ -10,8 +10,13 @@ var ECDSASigValue = asn1.define('ECDSASigValue', function () {
 	);
 });
 
-var seq = 0x10,
-	int = 0x02;
+var MAX_OCTET = 0x80,
+	CLASS_UNIVERSAL = 0,
+	PRIMITIVE_BIT = 0x20,
+	TAG_SEQ = 0x10,
+	TAG_INT = 0x02,
+	ENCODED_TAG_SEQ = (TAG_SEQ | PRIMITIVE_BIT) | (CLASS_UNIVERSAL << 6),
+	ENCODED_TAG_INT = TAG_INT | (CLASS_UNIVERSAL << 6);
 
 function getParamSize (keySize) {
 	var result = ((keySize / 8) | 0) + (keySize % 8 === 0 ? 0 : 1);
@@ -52,6 +57,8 @@ function derToJose(signature, alg) {
 	signature = signatureAsBuffer(signature);
 	var paramBytes = getParamBytesForAlg(alg);
 
+
+
 	signature = ECDSASigValue.decode(signature, 'der');
 
 	var r = bignumToBuf(signature.r, paramBytes);
@@ -70,7 +77,7 @@ function reduceBuffer (buf) {
 		++padding;
 	}
 
-	var needsSign = buf[padding] >= 0x80;
+	var needsSign = buf[padding] >= MAX_OCTET;
 	if (needsSign) {
 		--padding;
 
@@ -106,23 +113,23 @@ function joseToDer(signature, alg) {
 
 	var rsBytes = 1 + 1 + r.length + 1 + 1 + s.length;
 
-	var oneByteLength = rsBytes < 0x80;
+	var oneByteLength = rsBytes < MAX_OCTET;
 
 	signature = new Buffer((oneByteLength ? 2 : 3) + rsBytes);
 
 	var offset = 0;
-	signature[offset++] = (seq | 0x20) | 0 << 6;
+	signature[offset++] = ENCODED_TAG_SEQ;
 	if (oneByteLength) {
 		signature[offset++] = rsBytes;
 	} else {
-		signature[offset++] = 0x80 | 1;
+		signature[offset++] = MAX_OCTET	| 1;
 		signature[offset++] = rsBytes & 0xff;
 	}
-	signature[offset++] = int | (0 << 6);
+	signature[offset++] = ENCODED_TAG_INT;
 	signature[offset++] = r.length;
 	r.copy(signature, offset);
 	offset += r.length;
-	signature[offset++] = int | (0 << 6);
+	signature[offset++] = ENCODED_TAG_INT;
 	signature[offset++] = s.length;
 	s.copy(signature, offset);
 
