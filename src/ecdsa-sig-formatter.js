@@ -113,16 +113,21 @@ function joseToDer(signature, alg) {
 
 	var rsBytes = 1 + 1 + r.length + 1 + 1 + s.length;
 
-	var oneByteLength = rsBytes < MAX_OCTET;
+	var shortLength = rsBytes < MAX_OCTET;
 
-	signature = new Buffer((oneByteLength ? 2 : 3) + rsBytes);
+	signature = new Buffer((shortLength ? 2 : 3) + rsBytes);
 
 	var offset = 0;
 	signature[offset++] = ENCODED_TAG_SEQ;
-	if (oneByteLength) {
+	if (shortLength) {
+		// Bit 8 has value "0"
+		// bits 7-1 give the length.
 		signature[offset++] = rsBytes;
 	} else {
+		// Bit 8 of first octet has value "1"
+		// bits 7-1 give the number of additional length octets.
 		signature[offset++] = MAX_OCTET	| 1;
+		// length, base 256
 		signature[offset++] = rsBytes & 0xff;
 	}
 	signature[offset++] = ENCODED_TAG_INT;
