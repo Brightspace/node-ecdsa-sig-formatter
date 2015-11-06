@@ -27,7 +27,6 @@
   },
   "homepage": "https://github.com/Brightspace/node-ecdsa-sig-formatter#readme",
   "dependencies": {
-    "asn1.js": "^2.0.3",
     "base64-url": "^1.2.1"
   },
   "devDependencies": {
