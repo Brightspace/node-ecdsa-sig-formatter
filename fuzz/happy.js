@@ -13,7 +13,7 @@ var sslalgs = {
 	'ES512': 'RSA-SHA512'
 };
 
-['ES256', 'ES384', 'ES512'].forEach(function (alg) {
+['ES256', 'ES384', 'ES512'].forEach(function(alg) {
 	for (var i = 0; i < 10; ++i) {
 		var pem = keygen(alg);
 
