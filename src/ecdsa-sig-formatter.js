@@ -10,7 +10,7 @@ var MAX_OCTET = 0x80,
 	ENCODED_TAG_SEQ = (TAG_SEQ | PRIMITIVE_BIT) | (CLASS_UNIVERSAL << 6),
 	ENCODED_TAG_INT = TAG_INT | (CLASS_UNIVERSAL << 6);
 
-function getParamSize (keySize) {
+function getParamSize(keySize) {
 	var result = ((keySize / 8) | 0) + (keySize % 8 === 0 ? 0 : 1);
 	return result;
 }
@@ -21,7 +21,7 @@ var paramBytesForAlg = {
 	ES512: getParamSize(521)
 };
 
-function getParamBytesForAlg (alg) {
+function getParamBytesForAlg(alg) {
 	var paramBytes = paramBytesForAlg[alg];
 	if (paramBytes) {
 		return paramBytes;
@@ -30,7 +30,7 @@ function getParamBytesForAlg (alg) {
 	throw new Error('Unknown algorithm "' + alg + '"');
 }
 
-function signatureAsBuffer (signature) {
+function signatureAsBuffer(signature) {
 	if (Buffer.isBuffer(signature)) {
 		return signature;
 	} else if ('string' === typeof signature) {
@@ -113,7 +113,7 @@ function derToJose(signature, alg) {
 	return signature;
 }
 
-function reduceBuffer (buf) {
+function reduceBuffer(buf) {
 	var padding = 0;
 	for (var n = buf.length; padding < n && buf[padding] === 0;) {
 		++padding;

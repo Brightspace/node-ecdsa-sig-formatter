@@ -58,6 +58,8 @@ signature. Returns a `Buffer`
 
 ### Code Style
 
-This repository is configured with [EditorConfig][EditorConfig] rules.
+This repository is configured with [EditorConfig][EditorConfig] and
+[ESLint][ESLint] rules.
 
 [EditorConfig]: http://editorconfig.org/
+[ESLint]: http://eslint.org
