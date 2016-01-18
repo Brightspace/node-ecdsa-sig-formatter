@@ -2,6 +2,8 @@
 
 var base64Url = require('base64-url').escape;
 
+var getParamBytesForAlg = require('./param-bytes-for-alg');
+
 var MAX_OCTET = 0x80,
 	CLASS_UNIVERSAL = 0,
 	PRIMITIVE_BIT = 0x20,
@@ -9,26 +11,6 @@ var MAX_OCTET = 0x80,
 	TAG_INT = 0x02,
 	ENCODED_TAG_SEQ = (TAG_SEQ | PRIMITIVE_BIT) | (CLASS_UNIVERSAL << 6),
 	ENCODED_TAG_INT = TAG_INT | (CLASS_UNIVERSAL << 6);
-
-function getParamSize(keySize) {
-	var result = ((keySize / 8) | 0) + (keySize % 8 === 0 ? 0 : 1);
-	return result;
-}
-
-var paramBytesForAlg = {
-	ES256: getParamSize(256),
-	ES384: getParamSize(384),
-	ES512: getParamSize(521)
-};
-
-function getParamBytesForAlg(alg) {
-	var paramBytes = paramBytesForAlg[alg];
-	if (paramBytes) {
-		return paramBytes;
-	}
-
-	throw new Error('Unknown algorithm "' + alg + '"');
-}
 
 function signatureAsBuffer(signature) {
 	if (Buffer.isBuffer(signature)) {
@@ -43,6 +25,10 @@ function signatureAsBuffer(signature) {
 function derToJose(signature, alg) {
 	signature = signatureAsBuffer(signature);
 	var paramBytes = getParamBytesForAlg(alg);
+
+	// the DER encoded param should at most be the param size, plus a padding
+	// zero, since due to being a signed integer
+	var maxEncodedParamLength = paramBytes + 1;
 
 	var inputLength = signature.length;
 
@@ -70,6 +56,10 @@ function derToJose(signature, alg) {
 		throw new Error('"r" specified length of "' + rLength + '", only "' + (inputLength - offset - 2) + '" available');
 	}
 
+	if (maxEncodedParamLength < rLength) {
+		throw new Error('"r" specified length of "' + rLength + '", max of "' + maxEncodedParamLength + '" is acceptable');
+	}
+
 	var r = signature.slice(offset, offset + rLength);
 	offset += r.length;
 
@@ -81,6 +71,10 @@ function derToJose(signature, alg) {
 
 	if (inputLength - offset !== sLength) {
 		throw new Error('"s" specified length of "' + sLength + '", expected "' + (inputLength - offset) + '"');
+	}
+
+	if (maxEncodedParamLength < sLength) {
+		throw new Error('"s" specified length of "' + sLength + '", max of "' + maxEncodedParamLength + '" is acceptable');
 	}
 
 	var s = signature.slice(offset);
