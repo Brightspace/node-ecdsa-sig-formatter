@@ -2,9 +2,6 @@
 .npmignore
 
 .editorconfig
-.jscs.json
-.jshintrc
-.jshintignore
 
 spec
 coverage
