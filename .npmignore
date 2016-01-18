@@ -6,5 +6,7 @@
 .eslintrc
 
 spec
+benchmarks
+fuzz
 coverage
 .travis.yml
