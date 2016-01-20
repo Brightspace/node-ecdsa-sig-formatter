@@ -1,6 +1,6 @@
 {
   "name": "ecdsa-sig-formatter",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Translate ECDSA signatures between ASN.1/DER and JOSE-style concatenation",
   "main": "src/ecdsa-sig-formatter.js",
   "scripts": {
