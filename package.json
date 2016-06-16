@@ -33,13 +33,13 @@
   },
   "devDependencies": {
     "bench": "^0.3.6",
-    "chai": "^3.4.1",
-    "coveralls": "^2.11.6",
-    "elliptic": "^6.1.0",
-    "eslint": "^1.10.3",
-    "eslint-config-brightspace": "^0.1.0",
-    "istanbul": "^0.4.2",
-    "jwk-to-pem": "^1.2.4",
-    "mocha": "^2.3.4"
+    "chai": "^3.5.0",
+    "coveralls": "^2.11.9",
+    "elliptic": "^6.3.1",
+    "eslint": "^2.12.0",
+    "eslint-config-brightspace": "^0.2.1",
+    "istanbul": "^0.4.3",
+    "jwk-to-pem": "^1.2.5",
+    "mocha": "^2.5.3"
   }
 }
