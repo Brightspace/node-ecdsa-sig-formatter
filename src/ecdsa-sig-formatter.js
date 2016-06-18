@@ -107,13 +107,13 @@ function derToJose(signature, alg) {
 	return signature;
 }
 
-function countPadding(buf) {
+function countPadding(buf, start, stop) {
 	var padding = 0;
-	for (var n = buf.length; padding < n && buf[padding] === 0;) {
+	for (var n = stop; start + padding < n && buf[start + padding] === 0;) {
 		++padding;
 	}
 
-	var needsSign = buf[padding] >= MAX_OCTET;
+	var needsSign = buf[start + padding] >= MAX_OCTET;
 	if (needsSign) {
 		--padding;
 	}
@@ -130,50 +130,48 @@ function joseToDer(signature, alg) {
 		throw new TypeError('"' + alg + '" signatures must be "' + paramBytes * 2 + '" bytes, saw "' + signatureBytes + '"');
 	}
 
-	var r = signature.slice(0, paramBytes);
-	var s = signature.slice(paramBytes);
-	var rPadding = countPadding(r);
-	var sPadding = countPadding(s);
-	var rLength = r.length - rPadding;
-	var sLength = s.length - sPadding;
+	var rPadding = countPadding(signature, 0, paramBytes);
+	var sPadding = countPadding(signature, paramBytes, signature.length);
+	var rLength = paramBytes - rPadding;
+	var sLength = paramBytes - sPadding;
 
 	var rsBytes = 1 + 1 + rLength + 1 + 1 + sLength;
 
 	var shortLength = rsBytes < MAX_OCTET;
 
-	signature = new Buffer((shortLength ? 2 : 3) + rsBytes);
+	var dst = new Buffer((shortLength ? 2 : 3) + rsBytes);
 
 	var offset = 0;
-	signature[offset++] = ENCODED_TAG_SEQ;
+	dst[offset++] = ENCODED_TAG_SEQ;
 	if (shortLength) {
 		// Bit 8 has value "0"
 		// bits 7-1 give the length.
-		signature[offset++] = rsBytes;
+		dst[offset++] = rsBytes;
 	} else {
 		// Bit 8 of first octet has value "1"
 		// bits 7-1 give the number of additional length octets.
-		signature[offset++] = MAX_OCTET	| 1;
+		dst[offset++] = MAX_OCTET	| 1;
 		// length, base 256
-		signature[offset++] = rsBytes & 0xff;
+		dst[offset++] = rsBytes & 0xff;
 	}
-	signature[offset++] = ENCODED_TAG_INT;
-	signature[offset++] = rLength;
+	dst[offset++] = ENCODED_TAG_INT;
+	dst[offset++] = rLength;
 	if (rPadding < 0) {
-		signature[offset++] = 0;
-		offset += r.copy(signature, offset);
+		dst[offset++] = 0;
+		offset += signature.copy(dst, offset, 0, paramBytes);
 	} else {
-		offset += r.copy(signature, offset, rPadding);
+		offset += signature.copy(dst, offset, rPadding, paramBytes);
 	}
-	signature[offset++] = ENCODED_TAG_INT;
-	signature[offset++] = sLength;
+	dst[offset++] = ENCODED_TAG_INT;
+	dst[offset++] = sLength;
 	if (sPadding < 0) {
-		signature[offset++] = 0;
-		s.copy(signature, offset);
+		dst[offset++] = 0;
+		signature.copy(dst, offset, paramBytes);
 	} else {
-		s.copy(signature, offset, sPadding);
+		signature.copy(dst, offset, paramBytes + sPadding);
 	}
 
-	return signature;
+	return dst;
 }
 
 module.exports = {
