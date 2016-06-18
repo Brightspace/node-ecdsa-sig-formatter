@@ -60,8 +60,8 @@ function derToJose(signature, alg) {
 		throw new Error('"r" specified length of "' + rLength + '", max of "' + maxEncodedParamLength + '" is acceptable');
 	}
 
-	var r = signature.slice(offset, offset + rLength);
-	offset += r.length;
+	var rOffset = offset;
+	offset += rLength;
 
 	if (signature[offset++] !== ENCODED_TAG_INT) {
 		throw new Error('Could not find expected "int" for "s"');
@@ -77,34 +77,34 @@ function derToJose(signature, alg) {
 		throw new Error('"s" specified length of "' + sLength + '", max of "' + maxEncodedParamLength + '" is acceptable');
 	}
 
-	var s = signature.slice(offset);
-	offset += s.length;
+	var sOffset = offset;
+	offset += sLength;
 
 	if (offset !== inputLength) {
 		throw new Error('Expected to consume entire buffer, but "' + (inputLength - offset) + '" bytes remain');
 	}
 
-	var rPadding = paramBytes - r.length,
-		sPadding = paramBytes - s.length;
+	var rPadding = paramBytes - rLength,
+		sPadding = paramBytes - sLength;
 
-	signature = new Buffer(rPadding + r.length + sPadding + s.length);
+	var dst = new Buffer(rPadding + rLength + sPadding + sLength);
 
 	for (offset = 0; offset < rPadding; ++offset) {
-		signature[offset] = 0;
+		dst[offset] = 0;
 	}
-	r.copy(signature, offset, Math.max(-rPadding, 0));
+	signature.copy(dst, offset, rOffset + Math.max(-rPadding, 0), rOffset + rLength);
 
 	offset = paramBytes;
 
 	for (var o = offset; offset < o + sPadding; ++offset) {
-		signature[offset] = 0;
+		dst[offset] = 0;
 	}
-	s.copy(signature, offset, Math.max(-sPadding, 0));
+	signature.copy(dst, offset, sOffset + Math.max(-sPadding, 0), sOffset + sLength);
 
-	signature = signature.toString('base64');
-	signature = base64Url(signature);
+	dst = dst.toString('base64');
+	dst = base64Url(dst);
 
-	return signature;
+	return dst;
 }
 
 function countPadding(buf, start, stop) {
