@@ -109,7 +109,7 @@ function derToJose(signature, alg) {
 
 function countPadding(buf, start, stop) {
 	var padding = 0;
-	for (var n = stop; start + padding < n && buf[start + padding] === 0;) {
+	while (start + padding < stop && buf[start + padding] === 0) {
 		++padding;
 	}
 
