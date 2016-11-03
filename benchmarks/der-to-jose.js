@@ -1,5 +1,7 @@
 'use strict';
 
+var Buffer = require('safe-buffer').Buffer;
+
 var derToJose = require('..').derToJose;
 
 var sigs = [
@@ -9,7 +11,7 @@ var sigs = [
 ];
 
 var sigBuffers = sigs.map(function(sig) {
-	return [new Buffer(sig[0], 'base64'), sig[1]];
+	return [Buffer.from(sig[0], 'base64'), sig[1]];
 });
 
 module.exports.compare = {
