@@ -1,6 +1,7 @@
 'use strict';
 
-var expect = require('chai').expect,
+var Buffer = require('safe-buffer').Buffer,
+	expect = require('chai').expect,
 	mocha = require('mocha');
 
 var describe = mocha.describe,
@@ -43,7 +44,7 @@ describe('#derToJose', function() {
 				});
 
 				it('no seq', function() {
-					var input = new Buffer(10);
+					var input = Buffer.alloc(10);
 					input[0] = TAG_SEQ + 1; // not seq
 
 					function fn() {
@@ -54,7 +55,7 @@ describe('#derToJose', function() {
 				});
 
 				it('seq length exceeding input', function() {
-					var input = new Buffer(10);
+					var input = Buffer.alloc(10);
 					input[0] = TAG_SEQ;
 					input[1] = 10;
 
@@ -66,7 +67,7 @@ describe('#derToJose', function() {
 				});
 
 				it('r is not marked as int', function() {
-					var input = new Buffer(10);
+					var input = Buffer.alloc(10);
 					input[0] = TAG_SEQ;
 					input[1] = 8;
 					input[2] = TAG_INT + 1; // not int
@@ -79,7 +80,7 @@ describe('#derToJose', function() {
 				});
 
 				it('r length exceeds available input', function() {
-					var input = new Buffer(10);
+					var input = Buffer.alloc(10);
 					input[0] = TAG_SEQ;
 					input[1] = 8;
 					input[2] = TAG_INT;
@@ -93,7 +94,7 @@ describe('#derToJose', function() {
 				});
 
 				it('r length exceeds sensical param length', function() {
-					var input = new Buffer(getParamBytesForAlg(alg) + 2 + 6);
+					var input = Buffer.alloc(getParamBytesForAlg(alg) + 2 + 6);
 					input[0] = TAG_SEQ;
 					input[1] = getParamBytesForAlg(alg) + 2 + 4;
 					input[2] = TAG_INT;
@@ -107,7 +108,7 @@ describe('#derToJose', function() {
 				});
 
 				it('s is not marked as int', function() {
-					var input = new Buffer(10);
+					var input = Buffer.alloc(10);
 					input[0] = TAG_SEQ;
 					input[1] = 8;
 					input[2] = TAG_INT;
@@ -124,7 +125,7 @@ describe('#derToJose', function() {
 				});
 
 				it('s length exceeds available input', function() {
-					var input = new Buffer(10);
+					var input = Buffer.alloc(10);
 					input[0] = TAG_SEQ;
 					input[1] = 8;
 					input[2] = TAG_INT;
@@ -142,7 +143,7 @@ describe('#derToJose', function() {
 				});
 
 				it('s length does not consume available input', function() {
-					var input = new Buffer(10);
+					var input = Buffer.alloc(10);
 					input[0] = TAG_SEQ;
 					input[1] = 8;
 					input[2] = TAG_INT;
@@ -160,7 +161,7 @@ describe('#derToJose', function() {
 				});
 
 				it('s length exceeds sensical param length', function() {
-					var input = new Buffer(getParamBytesForAlg(alg) + 2 + 8);
+					var input = Buffer.alloc(getParamBytesForAlg(alg) + 2 + 8);
 					input[0] = TAG_SEQ;
 					input[1] = getParamBytesForAlg(alg) + 2 + 6;
 					input[2] = TAG_INT;

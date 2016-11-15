@@ -1,6 +1,7 @@
 'use strict';
 
 var base64url = require('base64-url').escape,
+	Buffer = require('safe-buffer').Buffer,
 	EC = require('elliptic').ec,
 	jwkToPem = require('jwk-to-pem');
 
@@ -17,7 +18,7 @@ var curves = {
 
 function b64(val) {
 	val = val.toString('hex', 2);
-	val = new Buffer(val, 'hex');
+	val = Buffer.from(val, 'hex');
 	val = val.toString('base64');
 	val = base64url(val);
 	return val;
