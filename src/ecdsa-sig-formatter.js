@@ -1,6 +1,6 @@
 'use strict';
 
-var base64Url = require('base64-url').escape;
+var base64Url = require('base64url').fromBase64;
 var Buffer = require('safe-buffer').Buffer;
 
 var getParamBytesForAlg = require('./param-bytes-for-alg');
