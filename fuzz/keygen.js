@@ -1,6 +1,6 @@
 'use strict';
 
-var base64url = require('base64-url').escape,
+var base64url = require('base64url').fromBase64,
 	Buffer = require('safe-buffer').Buffer,
 	EC = require('elliptic').ec,
 	jwkToPem = require('jwk-to-pem');
