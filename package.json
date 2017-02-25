@@ -36,11 +36,11 @@
     "bench": "^0.3.6",
     "chai": "^3.5.0",
     "coveralls": "^2.11.9",
-    "eslint": "^2.12.0",
+    "eslint": "^3.16.1",
     "eslint-config-brightspace": "^0.2.1",
     "istanbul": "^0.4.3",
     "jwk-to-pem": "^1.2.5",
-    "mocha": "^2.5.3",
+    "mocha": "^3.2.0",
     "native-crypto": "^1.7.0"
   }
 }
