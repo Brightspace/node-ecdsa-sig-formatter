@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/Brightspace/node-ecdsa-sig-formatter#readme",
   "dependencies": {
-    "base64url": "^2.0.0",
+    "base64-url": "^2.2.0",
     "safe-buffer": "^5.0.1"
   },
   "devDependencies": {
