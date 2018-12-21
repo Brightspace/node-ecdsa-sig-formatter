@@ -9,6 +9,7 @@
     "test": "istanbul cover --root src _mocha -- spec",
     "report-cov": "cat ./coverage/lcov.info | coveralls"
   },
+  "typings": "./src/ecdsa-sig-formatter.d.ts",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/Brightspace/node-ecdsa-sig-formatter.git"
