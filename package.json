@@ -1,6 +1,6 @@
 {
   "name": "ecdsa-sig-formatter",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "description": "Translate ECDSA signatures between ASN.1/DER and JOSE-style concatenation",
   "main": "src/ecdsa-sig-formatter.js",
   "scripts": {
@@ -9,6 +9,7 @@
     "test": "istanbul cover --root src _mocha -- spec",
     "report-cov": "cat ./coverage/lcov.info | coveralls"
   },
+  "typings": "./src/ecdsa-sig-formatter.d.ts",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/Brightspace/node-ecdsa-sig-formatter.git"
@@ -29,7 +30,6 @@
   },
   "homepage": "https://github.com/Brightspace/node-ecdsa-sig-formatter#readme",
   "dependencies": {
-    "base64url": "^2.0.0",
     "safe-buffer": "^5.0.1"
   },
   "devDependencies": {
