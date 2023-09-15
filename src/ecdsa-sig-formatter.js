@@ -1,6 +1,6 @@
 'use strict';
 
-var Buffer = require('safe-buffer').Buffer;
+var Buffer = require('buffer').Buffer;
 
 var getParamBytesForAlg = require('./param-bytes-for-alg');
 
@@ -12,18 +12,12 @@ var MAX_OCTET = 0x80,
 	ENCODED_TAG_SEQ = (TAG_SEQ | PRIMITIVE_BIT) | (CLASS_UNIVERSAL << 6),
 	ENCODED_TAG_INT = TAG_INT | (CLASS_UNIVERSAL << 6);
 
-function base64Url(base64) {
-	return base64
-		.replace(/=/g, '')
-		.replace(/\+/g, '-')
-		.replace(/\//g, '_');
-}
 
 function signatureAsBuffer(signature) {
 	if (Buffer.isBuffer(signature)) {
 		return signature;
 	} else if ('string' === typeof signature) {
-		return Buffer.from(signature, 'base64');
+		return Buffer.from(signature, 'base64url');
 	}
 
 	throw new TypeError('ECDSA signature must be a Base64 string or a Buffer');
@@ -108,8 +102,7 @@ function derToJose(signature, alg) {
 	}
 	signature.copy(dst, offset, sOffset + Math.max(-sPadding, 0), sOffset + sLength);
 
-	dst = dst.toString('base64');
-	dst = base64Url(dst);
+	dst = dst.toString('base64url);
 
 	return dst;
 }
