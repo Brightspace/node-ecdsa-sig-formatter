@@ -25,13 +25,13 @@
   ],
   "author": "D2L Corporation",
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=14.18.0"
+  },
   "bugs": {
     "url": "https://github.com/Brightspace/node-ecdsa-sig-formatter/issues"
   },
   "homepage": "https://github.com/Brightspace/node-ecdsa-sig-formatter#readme",
-  "dependencies": {
-    "safe-buffer": "^5.0.1"
-  },
   "devDependencies": {
     "bench": "^0.3.6",
     "chai": "^4.1.2",
