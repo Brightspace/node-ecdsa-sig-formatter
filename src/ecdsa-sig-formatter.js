@@ -1,7 +1,5 @@
 'use strict';
 
-var Buffer = require('safe-buffer').Buffer;
-
 var getParamBytesForAlg = require('./param-bytes-for-alg');
 
 var MAX_OCTET = 0x80,
