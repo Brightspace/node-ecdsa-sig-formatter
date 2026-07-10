@@ -36,7 +36,7 @@
     "bench": "^0.3.6",
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
-    "eslint": "^2.13.1",
+    "eslint": "^7.4.0",
     "eslint-config-brightspace": "^0.4.0",
     "istanbul": "^0.4.3",
     "jwk-to-pem": "^2.0.0",
