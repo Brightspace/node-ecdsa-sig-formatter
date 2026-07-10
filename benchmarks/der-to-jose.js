@@ -1,6 +1,6 @@
 'use strict';
 
-var Buffer = require('safe-buffer').Buffer;
+var Buffer = require('buffer').Buffer;
 
 var derToJose = require('..').derToJose;
 

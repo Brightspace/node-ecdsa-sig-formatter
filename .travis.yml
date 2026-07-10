@@ -1,11 +1,7 @@
 sudo: false
 language: node_js
 node_js:
-  - '0.12'
-  - 4
-  - 6
-  - 8
-  - 10
+  - 14
 after_success: npm run report-cov
 deploy:
   provider: npm
@@ -16,4 +12,4 @@ deploy:
   on:
     tags: true
     repo: Brightspace/node-ecdsa-sig-formatter
-    node: 10
+    node: 14
