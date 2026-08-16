@@ -1,7 +1,5 @@
 'use strict';
 
-var Buffer = require('safe-buffer').Buffer;
-
 var joseToDer = require('..').joseToDer;
 
 var sigs = [

@@ -1,7 +1,6 @@
 'use strict';
 
-var Buffer = require('safe-buffer').Buffer,
-	expect = require('chai').expect,
+var expect = require('chai').expect,
 	mocha = require('mocha');
 
 var describe = mocha.describe,
