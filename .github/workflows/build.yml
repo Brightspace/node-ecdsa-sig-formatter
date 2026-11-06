@@ -1,0 +1,32 @@
+name: Build
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20']
+
+    steps:
+      - uses: Brightspace/third-party-actions@actions/checkout
+
+      - uses: Brightspace/setup-node@main
+        with:
+          node-version: ${{ matrix.node }}
+          d2l-registry-token: ${{ secrets.D2L_PACKAGE_REGISTRY_AUTH_TOKEN }}
+
+      - run: npm ci
+
+      - run: npm test
