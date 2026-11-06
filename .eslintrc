@@ -1,6 +1,0 @@
-{
-  "extends": "brightspace/node-config",
-  "env": {
-    "es6": false
-  }
-}

@@ -4,10 +4,9 @@
   "description": "Translate ECDSA signatures between ASN.1/DER and JOSE-style concatenation",
   "main": "src/ecdsa-sig-formatter.js",
   "scripts": {
-    "check-style": "eslint .",
-    "pretest": "npm run check-style",
-    "test": "istanbul cover --root src _mocha -- spec",
-    "report-cov": "cat ./coverage/lcov.info | coveralls"
+    "lint": "eslint src spec fuzz benchmarks",
+    "tests": "node --test ./spec/*.js",
+    "test": "npm run lint && npm run tests"
   },
   "typings": "./src/ecdsa-sig-formatter.d.ts",
   "repository": {
@@ -34,13 +33,10 @@
   },
   "devDependencies": {
     "bench": "^0.3.6",
-    "chai": "^4.1.2",
-    "coveralls": "^3.0.0",
-    "eslint": "^2.13.1",
-    "eslint-config-brightspace": "^0.4.0",
-    "istanbul": "^0.4.3",
+    "chai": "^6.3.0",
+    "eslint": "^10.13.0",
+    "eslint-config-brightspace": "^4.0.0",
     "jwk-to-pem": "^2.0.0",
-    "mocha": "^3.5.3",
     "native-crypto": "^1.7.0"
   }
 }

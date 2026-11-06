@@ -1,7 +1,5 @@
 # ecdsa-sig-formatter
 
-[![Build Status](https://travis-ci.org/Brightspace/node-ecdsa-sig-formatter.svg?branch=master)](https://travis-ci.org/Brightspace/node-ecdsa-sig-formatter) [![Coverage Status](https://coveralls.io/repos/Brightspace/node-ecdsa-sig-formatter/badge.svg)](https://coveralls.io/r/Brightspace/node-ecdsa-sig-formatter)
-
 Translate between JOSE and ASN.1/DER encodings for ECDSA signatures
 
 ## Install

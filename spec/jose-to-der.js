@@ -1,12 +1,10 @@
 'use strict';
 
-var expect = require('chai').expect,
-	mocha = require('mocha');
+const { describe, it } = require('node:test');
 
-var describe = mocha.describe,
-	it = mocha.it;
+const expect = require('chai').expect;
 
-var format = require('..');
+const format = require('..');
 
 describe('#joseToDer', function() {
 	describe('should throw for', function() {
